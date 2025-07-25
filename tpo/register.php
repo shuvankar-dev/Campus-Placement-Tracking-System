@@ -10,26 +10,33 @@
     <div class="container d-flex justify-content-center align-items-center" style="height:100vh;">
     <div class="card shadow p-4" style="width:400px;">
         <h3 class="text-center mb-4 text-success">TPO Registration</h3>
-        
-        <form>
+    <?php
+        if (isset($_GET['success'])) {
+            echo "<p class='text-success'>Registered Successfully! <a href='index.php'>Login Now</a></p>";
+        } elseif (isset($_GET['error'])) {
+            echo "<p class='text-danger'>Error: " . htmlspecialchars($_GET['error']) . "</p>";
+        }
+        ?>
+
+        <form action="../action/tpo_register_action.php" method="POST">
             <div class="mb-3">
-                <label class="form-label">User Name</label>
+                <label class="form-label"> Name</label>
                 <div class="row">
                     <div class="col">
-                        <input type="text" class="form-control" placeholder="First name" aria-label="First name">
+                        <input type="text" class="form-control" name="first_name" placeholder="First name" aria-label="First name" required>
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+                        <input type="text" class="form-control" name="last_name" placeholder="Last name" aria-label="Last name" required>
                     </div>
                 </div>
             </div>
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-control" placeholder="Enter email">
+                <input type="email" class="form-control" placeholder="Enter email" required name="email">
             </div>
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" class="form-control" placeholder="Create password">
+                <input type="password" class="form-control" placeholder="Create password" required name="password">
             </div>
             <button type="submit" class="btn btn-success w-100">Register</button>
         </form>
