@@ -12,15 +12,20 @@
 <div class="container d-flex justify-content-center align-items-center" style="height:100vh;">
     <div class="card shadow p-4" style="width:350px;">
         <h3 class="text-center mb-4 text-success">TPO Login</h3>
+        <?php
+        if (isset($_GET['error'])) {
+            echo "<p class='text-danger text-center'>" . htmlspecialchars($_GET['error']) . "</p>";
+        }
+        ?>
         
-        <form>
+        <form action="../action/tpo_login_action.php" method="POST">
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-control" placeholder="Enter TPO email">
+                <input type="email" class="form-control" name="email" placeholder="Enter TPO email" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" class="form-control" placeholder="Enter password">
+                <input type="password" class="form-control" placeholder="Enter password" required name="password">
             </div>
             <button type="submit" class="btn btn-success w-100">Login</button>
         </form>
