@@ -13,7 +13,7 @@
         <h3 class="text-center mb-4 text-success">TPO Registration</h3>
     <?php
         if (isset($_GET['success'])) {
-            echo "<p class='text-success'>Registered Successfully! <a href='index.php'>Login Now</a></p>";
+            echo "<p class='text-success'>Registered Successfully!";
         } elseif (isset($_GET['error'])) {
             echo "<p class='text-danger'>Error: " . htmlspecialchars($_GET['error']) . "</p>";
         }
