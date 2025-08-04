@@ -12,30 +12,137 @@ if (!isset($_SESSION['tpo_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TPO Dashboard</title>
-    <link rel="stylesheet" href="../assets/style.css">
+    <!-- <link rel="stylesheet" href="../assets/style.css"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
+    <!-- Top Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+            <a class="navbar-brand" href="#">TPO Dashboard</a>
 
-<div class="container mt-5">
-    <div class="card p-4 shadow" >
-        <h3>Welcome, <?php echo $_SESSION['tpo_first_name'] . " " . $_SESSION['tpo_last_name']; ?> </h3>
-        <p>You are now logged in as TPO.</p>
-        <div class="mb-3">
-            <label for="formFile" class="form-label">Upload File</label>
-            <input class="form-control" type="file" id="formFile">
+            <div class="ms-auto d-flex align-items-center">
+                <span class="me-3 fw-semibold text-capitalize">
+                    <?php echo $_SESSION['tpo_first_name'] . " " . $_SESSION['tpo_last_name']; ?>
+                </span>
+
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="../assets/images/user.png" alt="Profile" width="40" height="40" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                        <li><h6 class="dropdown-header"><?php echo $_SESSION['tpo_email']; ?></h6></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item text-danger" href="../tpo/logout.php">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+    <div class="d-flex" id="wrapper">
+    
+     <!-- Sidebar -->
+    <div class="bg-dark text-white p-3" style="width: 250px; min-height: 100vh;">
+            <h4 class="mb-4">TPO Panel</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-white">Dashboard</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-white">Departments</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-white">Students</a>
+                </li>
+            <li class="nav-item mb-2">
+                <a href="#" class="nav-link text-white">Job Posts</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container-fluid p-4">
+        <!-- Cards Row -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white mb-3">
+                    <div class="card-body" style="height: 100px;">Departments</div>
+                    <div class="card-footer">
+                        <a href="#" class="text-white text-decoration-none" data-bs-toggle="modal" data-bs-target="#departmentModal">
+                            View Details →
+                        </a>
+                        <!-- Department Modal -->
+                        <div class="modal fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="departmentModalLabel">Department Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <ul>
+                                <li>Computer Science and Engineering</li>
+                                <li>Information Technology</li>
+                                <li>Electronics and Communication</li>
+                                <li>Mechanical Engineering</li>
+                                <li>Civil Engineering</li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-white mb-3">
+                    <div class="card-body" style="height: 100px;">Jobs</div>
+                    <div class="card-footer">
+                        <a href="#" class="text-white text-decoration-none">View Details →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white mb-3">
+                    <div class="card-body" style="height: 100px;"> Students</div>
+                    <div class="card-footer">
+                        <a href="#" class="text-white text-decoration-none">View Details →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-danger text-white mb-3">
+                    <div class="card-body" style="height: 100px;">Applications</div>
+                    <div class="card-footer">
+                        <a href="#" class="text-white text-decoration-none">View Details →</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="checkDefault">
-            <label class="form-check-label" for="checkDefault">
+
+        <!-- Upload Section -->
+        <!-- <div class="card p-4 shadow" style="max-width: 500px;">
+            <h5>Upload Student List</h5>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Upload File</label>
+                <input class="form-control" type="file" id="formFile">
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDefault">
+                <label class="form-check-label" for="checkDefault">
                     Confirm Upload
-            </label>
-        </div>
-        <button class="btn btn-primary mt-3" id="uploadBtn" disabled>Upload</button>
-
+                </label>
+            </div>
+            <button class="btn btn-primary mt-3" id="uploadBtn" disabled>Upload</button>
+        </div> -->
     </div>
 </div>
 <script src="../assets/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
