@@ -4,7 +4,20 @@ if (!isset($_SESSION['tpo_id'])) {
     header("Location: index.php");
     exit();
 }
-?>
+
+// Set the email in the current session
+if (!isset($_SESSION['tpo_email']) && isset($_SESSION['tpo_id'])) {
+    // Connect to the database to get the email
+    include('../config.php');
+    $tpo_id = $_SESSION['tpo_id'];
+    $sql = "SELECT email FROM tpo_users WHERE id='$tpo_id'";
+    $result = $conn->query($sql);   
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $_SESSION['tpo_email'] = $row['email'];
+    }
+}
+?>  
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +31,7 @@ if (!isset($_SESSION['tpo_id'])) {
 </head>
 <body class="bg-light">
     <!-- Top Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+        <nav class="navbar navbar-expand-1g navbar-light text-bg-light p-3 shadow-sm px-4">
             <a class="navbar-brand" href="#">TPO Dashboard</a>
 
             <div class="ms-auto d-flex align-items-center">
@@ -44,7 +57,7 @@ if (!isset($_SESSION['tpo_id'])) {
     <div class="d-flex" id="wrapper">
     
      <!-- Sidebar -->
-    <div class="bg-dark text-white p-3" style="width: 250px; min-height: 100vh;">
+    <div class="text-bg-primary p-3" style="width: 250px; min-height: 100vh;">
             <h4 class="mb-4">TPO Panel</h4>
             <ul class="nav flex-column">
                 <li class="nav-item mb-2">
@@ -66,10 +79,10 @@ if (!isset($_SESSION['tpo_id'])) {
         <!-- Cards Row -->
         <div class="row mb-4">
             <div class="col-md-3">
-                <div class="card bg-primary text-white mb-3">
+                <div class="card bg-primary p-3 text-white mb-3 ">
                     <div class="card-body" style="height: 100px;">Departments</div>
-                    <div class="card-footer">
-                        <a href="#" class="text-white text-decoration-none" data-bs-toggle="modal" data-bs-target="#departmentModal">
+                    <div class="card-footer text-bg-light p-3">
+                        <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#departmentModal">
                             View Details →
                         </a>
                         <!-- Department Modal -->
@@ -100,26 +113,26 @@ if (!isset($_SESSION['tpo_id'])) {
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card bg-warning text-white mb-3">
+                <div class="card bg-warning p-3 text-white mb-3">
                     <div class="card-body" style="height: 100px;">Jobs</div>
-                    <div class="card-footer">
-                        <a href="#" class="text-white text-decoration-none">View Details →</a>
+                    <div class="card-footer text-bg-light p-3">
+                        <a href="#" class="text-dark text-decoration-none">View Details →</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card bg-success text-white mb-3">
+                <div class="card bg-success p-3 text-white mb-3">
                     <div class="card-body" style="height: 100px;"> Students</div>
-                    <div class="card-footer">
-                        <a href="#" class="text-white text-decoration-none">View Details →</a>
+                    <div class="card-footer text-bg-light p-3">
+                        <a href="#" class="text-dark text-decoration-none">View Details →</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card bg-danger text-white mb-3">
+                <div class="card text-bg-secondary p-3 text-white mb-3">
                     <div class="card-body" style="height: 100px;">Applications</div>
-                    <div class="card-footer">
-                        <a href="#" class="text-white text-decoration-none">View Details →</a>
+                    <div class="card-footer text-bg-light p-3">
+                        <a href="#" class="text-dark text-decoration-none">View Details →</a>
                     </div>
                 </div>
             </div>
