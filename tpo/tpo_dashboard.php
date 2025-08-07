@@ -116,7 +116,7 @@ if (!isset($_SESSION['tpo_email']) && isset($_SESSION['tpo_id'])) {
                 <div class="card bg-warning p-3 text-white mb-3">
                     <div class="card-body" style="height: 100px;">Jobs</div>
                     <div class="card-footer text-bg-light p-3">
-                        <a href="#" class="text-dark text-decoration-none">View Details →</a>
+                        <a href="jobs.php" class="text-dark text-decoration-none">View Details →</a>
                     </div>
                 </div>
             </div>
