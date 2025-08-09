@@ -28,6 +28,7 @@ if (!isset($_SESSION['tpo_email']) && isset($_SESSION['tpo_id'])) {
     <!-- <link rel="stylesheet" href="../assets/style.css"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body class="bg-light">
     <!-- Top Navbar -->
@@ -64,14 +65,16 @@ if (!isset($_SESSION['tpo_email']) && isset($_SESSION['tpo_id'])) {
                     <a href="#" class="nav-link text-white">Dashboard</a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a href="#" class="nav-link text-white">Departments</a>
+                    <a href="departments.php" class="nav-link text-white">Departments</a>
                 </li>
                 <li class="nav-item mb-2">
                     <a href="#" class="nav-link text-white">Students</a>
                 </li>
             <li class="nav-item mb-2">
-                <a href="#" class="nav-link text-white">Job Posts</a>
+                <a href="jobs.php" class="nav-link text-white">Job Posts</a>
             </li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link text-white">Applications</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link text-white"><i class="fa-solid fa-gear me-2"></i>Settings</a></li>
         </ul>
     </div>
 
@@ -82,33 +85,9 @@ if (!isset($_SESSION['tpo_email']) && isset($_SESSION['tpo_id'])) {
                 <div class="card bg-primary p-3 text-white mb-3 ">
                     <div class="card-body" style="height: 100px;">Departments</div>
                     <div class="card-footer text-bg-light p-3">
-                        <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#departmentModal">
+                        <a href="departments.php" class="text-dark text-decoration-none">
                             View Details →
                         </a>
-                        <!-- Department Modal -->
-                        <div class="modal fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="departmentModalLabel">Department Details</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <ul>
-                                <li>Computer Science and Engineering</li>
-                                <li>Information Technology</li>
-                                <li>Electronics and Communication</li>
-                                <li>Mechanical Engineering</li>
-                                <li>Civil Engineering</li>
-                                </ul>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -138,21 +117,7 @@ if (!isset($_SESSION['tpo_email']) && isset($_SESSION['tpo_id'])) {
             </div>
         </div>
 
-        <!-- Upload Section -->
-        <!-- <div class="card p-4 shadow" style="max-width: 500px;">
-            <h5>Upload Student List</h5>
-            <div class="mb-3">
-                <label for="formFile" class="form-label">Upload File</label>
-                <input class="form-control" type="file" id="formFile">
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkDefault">
-                <label class="form-check-label" for="checkDefault">
-                    Confirm Upload
-                </label>
-            </div>
-            <button class="btn btn-primary mt-3" id="uploadBtn" disabled>Upload</button>
-        </div> -->
+        
     </div>
 </div>
 <script src="../assets/app.js"></script>

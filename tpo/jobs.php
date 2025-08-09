@@ -54,16 +54,9 @@ include('../config.php');
 
     <!-- Page Content -->
     <div class="container-fluid p-4">
-        <?php if (isset($_SESSION['success'])): ?>
+        <?php if (isset($_SESSION['message'])): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <?php echo $_SESSION['success']; unset($_SESSION['success']); ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
-        
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+                <?php echo $_SESSION['message']; unset($_SESSION['message']); ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
@@ -112,12 +105,12 @@ include('../config.php');
         <table class="table table-bordered table-hover bg-white shadow-sm">
             <thead class="table-primary text-white">
                 <tr>
-                    <th>SL No</th>
-                    <th>Company Name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Company Link</th>
-                    <th>Action</th>
+                    <th style="width: 5%;">SL No</th>
+                    <th style="width: 25%;">Company Name</th>
+                    <th style="width: 15%;">Start Date</th>
+                    <th style="width: 15%;">End Date</th>
+                    <th style="width: 15%;">Company Link</th>
+                    <th style="width: 25%;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -130,17 +123,27 @@ include('../config.php');
                     while ($row = $result->fetch_assoc()):
                 ?>
                     <tr>
-                        <td><?= $i++ ?></td>
+                        <td><?= $i ?></td>
                         <td><?= htmlspecialchars($row['company_name']) ?></td>
                         <td><?= $row['start_date'] ?></td>
                         <td><?= $row['end_date'] ?></td>
-                        <td><a href="<?= $row['company_link'] ?>" target="_blank">Visit</a></td>
-                        <td> <a href="job_edit.php?id=<?php echo $row['id']; ?>">Edit</a></td>
-                        <td>
-                            Delete
+                        <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            <a href="<?= $row['company_link'] ?>" target="_blank" title="<?= $row['company_link'] ?>">Visit</a>
+                        </td>
+                        <td class="text-center"> 
+                            <form name="upd-<?php echo $i ?>" action="job_edit.php" method="post" class="d-inline">
+                                <input type="hidden" name="job_id" value="<?php echo $row['id']; ?>">
+                                <button type="submit" class="btn btn-sm btn-warning me-2">Edit</button>
+                            </form>
+                            
+                            <form name="del-<?php echo $i ?>" action="job_delete.php" method="get" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this job?');">
+                                <input type="hidden" name="job_id" value="<?php echo $row['id']; ?>">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 <?php
+                        $i++;
                     endwhile;
                 else:
                 ?>

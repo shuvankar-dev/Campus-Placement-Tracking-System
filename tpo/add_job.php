@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     // Validate data
     if (empty($company_name) || empty($start_date) || empty($end_date) || empty($company_link)) {
-        $_SESSION['error'] = "All fields are required.";
+        $_SESSION['message'] = "All fields are required.";
         header("Location: jobs.php");
         exit();
     }
@@ -26,9 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("ssss", $company_name, $start_date, $end_date, $company_link);
     
     if ($stmt->execute()) {
-        $_SESSION['success'] = "Job added successfully!";
+        $_SESSION['message'] = "Job added successfully!";
     } else {
-        $_SESSION['error'] = "Error adding job: " . $conn->error;
+        $_SESSION['message'] = "Error adding job: " . $conn->error;
     }
     
     $stmt->close();
