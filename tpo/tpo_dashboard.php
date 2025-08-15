@@ -68,12 +68,12 @@ if (!isset($_SESSION['tpo_email']) && isset($_SESSION['tpo_id'])) {
                     <a href="departments.php" class="nav-link text-white">Departments</a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a href="#" class="nav-link text-white">Students</a>
+                    <a href="students.php" class="nav-link text-white">Students</a>
                 </li>
             <li class="nav-item mb-2">
                 <a href="jobs.php" class="nav-link text-white">Job Posts</a>
             </li>
-            <li class="nav-item mb-2"><a href="#" class="nav-link text-white">Applications</a></li>
+            <li class="nav-item mb-2"><a href="applications.php" class="nav-link text-white">Applications</a></li>
             <li class="nav-item mb-2"><a href="#" class="nav-link text-white"><i class="fa-solid fa-gear me-2"></i>Settings</a></li>
         </ul>
     </div>
@@ -103,7 +103,7 @@ if (!isset($_SESSION['tpo_email']) && isset($_SESSION['tpo_id'])) {
                 <div class="card bg-success p-3 text-white mb-3">
                     <div class="card-body" style="height: 100px;"> Students</div>
                     <div class="card-footer text-bg-light p-3">
-                        <a href="#" class="text-dark text-decoration-none">View Details →</a>
+                        <a href="students.php" class="text-dark text-decoration-none">View Details →</a>
                     </div>
                 </div>
             </div>
@@ -111,7 +111,7 @@ if (!isset($_SESSION['tpo_email']) && isset($_SESSION['tpo_id'])) {
                 <div class="card text-bg-secondary p-3 text-white mb-3">
                     <div class="card-body" style="height: 100px;">Applications</div>
                     <div class="card-footer text-bg-light p-3">
-                        <a href="#" class="text-dark text-decoration-none">View Details →</a>
+                        <a href="applications.php" class="text-dark text-decoration-none">View Details →</a>
                     </div>
                 </div>
             </div>

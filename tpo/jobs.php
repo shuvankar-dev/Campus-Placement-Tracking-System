@@ -68,7 +68,7 @@ include('../config.php');
 
         <!-- Add Job Modal -->
         <div class="modal fade" id="addJobModal" tabindex="-1" aria-labelledby="addJobModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addJobModalLabel">Add New Job</h5>
@@ -76,21 +76,33 @@ include('../config.php');
                     </div>
                     <div class="modal-body">
                         <form id="addJobForm" action="add_job.php" method="POST">
-                            <div class="mb-3">
-                                <label for="company_name" class="form-label">Company Name</label>
-                                <input type="text" class="form-control" id="company_name" name="company_name" required>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="job_title" class="form-label">Job Title</label>
+                                    <input type="text" class="form-control" id="job_title" name="job_title" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="company_name" class="form-label">Company Name</label>
+                                    <input type="text" class="form-control" id="company_name" name="company_name" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="campus_date" class="form-label">Campus Date</label>
+                                    <input type="date" class="form-control" id="campus_date" name="campus_date" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="last_date_apply" class="form-label">Last Date to Apply</label>
+                                    <input type="date" class="form-control" id="last_date_apply" name="last_date_apply" required>
+                                </div>
                             </div>
                             <div class="mb-3">
-                                <label for="start_date" class="form-label">Start Date</label>
-                                <input type="date" class="form-control" id="start_date" name="start_date" required>
+                                <label for="company_url" class="form-label">Company Website</label>
+                                <input type="url" class="form-control" id="company_url" name="company_url" placeholder="https://example.com" required>
                             </div>
                             <div class="mb-3">
-                                <label for="end_date" class="form-label">End Date</label>
-                                <input type="date" class="form-control" id="end_date" name="end_date" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="company_link" class="form-label">Company Link</label>
-                                <input type="url" class="form-control" id="company_link" name="company_link" placeholder="https://example.com" required>
+                                <label for="job_description" class="form-label">Job Description</label>
+                                <textarea class="form-control" id="job_description" name="job_description" rows="4" required placeholder="Enter detailed job description..."></textarea>
                             </div>
                         </form>
                     </div>
@@ -105,49 +117,100 @@ include('../config.php');
         <table class="table table-bordered table-hover bg-white shadow-sm">
             <thead class="table-primary text-white">
                 <tr>
-                    <th style="width: 5%;">SL No</th>
-                    <th style="width: 25%;">Company Name</th>
-                    <th style="width: 15%;">Start Date</th>
-                    <th style="width: 15%;">End Date</th>
-                    <th style="width: 15%;">Company Link</th>
-                    <th style="width: 25%;">Actions</th>
+                    <th style="width: 5%;">ID</th>
+                    <th style="width: 20%;">Job Title</th>
+                    <th style="width: 15%;">Company Name</th>
+                    <th style="width: 12%;">Campus Date</th>
+                    <th style="width: 12%;">Last Date Apply</th>
+                    <th style="width: 8%;">Website</th>
+                    <th style="width: 8%;">Details</th>
+                    <th style="width: 20%;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $sql = "SELECT * FROM jobs ORDER BY id DESC";
+                $sql = "SELECT * FROM job ORDER BY id DESC";
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0):
-                    $i = 1;
                     while ($row = $result->fetch_assoc()):
                 ?>
                     <tr>
-                        <td><?= $i ?></td>
+                        <td><?= $row['id'] ?></td>
+                        <td><?= htmlspecialchars($row['job_title']) ?></td>
                         <td><?= htmlspecialchars($row['company_name']) ?></td>
-                        <td><?= $row['start_date'] ?></td>
-                        <td><?= $row['end_date'] ?></td>
-                        <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                            <a href="<?= $row['company_link'] ?>" target="_blank" title="<?= $row['company_link'] ?>">Visit</a>
+                        <td><?= date('d-m-Y', strtotime($row['campus_date'])) ?></td>
+                        <td><?= date('d-m-Y', strtotime($row['last_date_apply'])) ?></td>
+                        <td class="text-center">
+                            <a href="<?= htmlspecialchars($row['company_url']) ?>" target="_blank" class="btn btn-sm btn-outline-primary" title="Visit Company Website">
+                                <i class="fa-solid fa-external-link-alt"></i>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#jobDetailsModal<?= $row['id'] ?>" title="View Job Description">
+                                <i class="fa-solid fa-info-circle"></i>
+                            </button>
                         </td>
                         <td class="text-center"> 
-                            <form name="upd-<?php echo $i ?>" action="job_edit.php" method="post" class="d-inline">
+                            <form name="upd-<?php echo $row['id'] ?>" action="job_edit.php" method="post" class="d-inline">
                                 <input type="hidden" name="job_id" value="<?php echo $row['id']; ?>">
-                                <button type="submit" class="btn btn-sm btn-warning me-2">Edit</button>
+                                <button type="submit" class="btn btn-sm btn-warning me-1" title="Edit Job">
+                                    <i class="fa-solid fa-edit"></i>
+                                </button>
                             </form>
                             
-                            <form name="del-<?php echo $i ?>" action="job_delete.php" method="get" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this job?');">
+                            <form name="del-<?php echo $row['id'] ?>" action="job_delete.php" method="get" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this job?');">
                                 <input type="hidden" name="job_id" value="<?php echo $row['id']; ?>">
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                <button type="submit" class="btn btn-sm btn-danger" title="Delete Job">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </form>
                         </td>
                     </tr>
+
+                    <!-- Job Details Modal -->
+                    <div class="modal fade" id="jobDetailsModal<?= $row['id'] ?>" tabindex="-1" aria-labelledby="jobDetailsModalLabel<?= $row['id'] ?>" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="jobDetailsModalLabel<?= $row['id'] ?>">
+                                        <?= htmlspecialchars($row['job_title']) ?> - <?= htmlspecialchars($row['company_name']) ?>
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <strong>Campus Date:</strong> <?= date('d F Y', strtotime($row['campus_date'])) ?>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <strong>Last Date to Apply:</strong> <?= date('d F Y', strtotime($row['last_date_apply'])) ?>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <strong>Company Website:</strong> 
+                                        <a href="<?= htmlspecialchars($row['company_url']) ?>" target="_blank" class="ms-2">
+                                            <?= htmlspecialchars($row['company_url']) ?> <i class="fa-solid fa-external-link-alt"></i>
+                                        </a>
+                                    </div>
+                                    <div class="mb-3">
+                                        <strong>Job Description:</strong>
+                                        <div class="mt-2 p-3 bg-light rounded">
+                                            <?= nl2br(htmlspecialchars($row['job_description'])) ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <?php
-                        $i++;
                     endwhile;
                 else:
                 ?>
-                    <tr><td colspan="6" class="text-center">No job posts found.</td></tr>
+                    <tr><td colspan="8" class="text-center">No job posts found.</td></tr>
                 <?php endif; ?>
             </tbody>
         </table>

@@ -8,23 +8,34 @@ if(!isset($_POST['job_id'])) {
 }
 
 $job_id = $_POST['job_id']; 
-$src = "SELECT * FROM jobs WHERE id = $job_id";
+$src = "SELECT * FROM job WHERE id = $job_id";
 $rs = mysqli_query($conn, $src) or die(mysqli_error($conn));
 $job = mysqli_fetch_assoc($rs);
 
 // Handle form submission for updating
 if(isset($_POST['update_job'])) {
+    $job_title = $_POST['job_title'];
     $company_name = $_POST['company_name'];
-    $start_date = $_POST['start_date'];
-    $end_date = $_POST['end_date'];
-    $company_link = $_POST['company_link'];
+    $campus_date = $_POST['campus_date'];
+    $last_date_apply = $_POST['last_date_apply'];
+    $job_description = $_POST['job_description'];
+    $company_url = $_POST['company_url'];
     $job_id = $_POST['job_id'];
     
-    $update_sql = "UPDATE jobs SET 
+    // Validate dates
+    if ($last_date_apply >= $campus_date) {
+        $_SESSION['message'] = "Last date to apply must be before the campus date.";
+        header("Location: jobs.php");
+        exit();
+    }
+    
+    $update_sql = "UPDATE job SET 
+                  job_title = '$job_title',
                   company_name = '$company_name',
-                  start_date = '$start_date',
-                  end_date = '$end_date',
-                  company_link = '$company_link'
+                  campus_date = '$campus_date',
+                  last_date_apply = '$last_date_apply',
+                  job_description = '$job_description',
+                  company_url = '$company_url'
                   WHERE id = $job_id";
                   
     if(mysqli_query($conn, $update_sql)) {
@@ -92,7 +103,7 @@ if(isset($_POST['update_job'])) {
 
             <!-- Edit Job Modal (Auto-opens) -->
             <div class="modal fade" id="editJobModal" tabindex="-1" aria-labelledby="editJobModalLabel" aria-hidden="true" data-bs-backdrop="static">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="editJobModalLabel">Edit Job</h5>
@@ -103,21 +114,33 @@ if(isset($_POST['update_job'])) {
                                 <input type="hidden" name="job_id" value="<?php echo $job['id']; ?>">
                                 <input type="hidden" name="update_job" value="1">
                                 
-                                <div class="mb-3">
-                                    <label for="company_name" class="form-label">Company Name</label>
-                                    <input type="text" class="form-control" id="company_name" name="company_name" value="<?php echo htmlspecialchars($job['company_name']); ?>" required>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="job_title" class="form-label">Job Title</label>
+                                        <input type="text" class="form-control" id="job_title" name="job_title" value="<?php echo htmlspecialchars($job['job_title']); ?>" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="company_name" class="form-label">Company Name</label>
+                                        <input type="text" class="form-control" id="company_name" name="company_name" value="<?php echo htmlspecialchars($job['company_name']); ?>" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="campus_date" class="form-label">Campus Date</label>
+                                        <input type="date" class="form-control" id="campus_date" name="campus_date" value="<?php echo $job['campus_date']; ?>" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="last_date_apply" class="form-label">Last Date to Apply</label>
+                                        <input type="date" class="form-control" id="last_date_apply" name="last_date_apply" value="<?php echo $job['last_date_apply']; ?>" required>
+                                    </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="start_date" class="form-label">Start Date</label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date" value="<?php echo $job['start_date']; ?>" required>
+                                    <label for="company_url" class="form-label">Company Website</label>
+                                    <input type="url" class="form-control" id="company_url" name="company_url" value="<?php echo htmlspecialchars($job['company_url']); ?>" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="end_date" class="form-label">End Date</label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date" value="<?php echo $job['end_date']; ?>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="company_link" class="form-label">Company Link</label>
-                                    <input type="url" class="form-control" id="company_link" name="company_link" value="<?php echo $job['company_link']; ?>" required>
+                                    <label for="job_description" class="form-label">Job Description</label>
+                                    <textarea class="form-control" id="job_description" name="job_description" rows="4" required><?php echo htmlspecialchars($job['job_description']); ?></textarea>
                                 </div>
                                 
                                 <div class="modal-footer px-0 pb-0">

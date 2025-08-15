@@ -103,62 +103,132 @@ include('../config.php');
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h3>Department Details</h3>
-            <a href="tpo_dashboard.php" class="btn btn-secondary"><i class="fa-solid fa-arrow-left me-2"></i>Back to Dashboard</a>
+            <div>
+                <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
+                    <i class="fa-solid fa-plus me-2"></i>Add New Department
+                </button>
+                <a href="tpo_dashboard.php" class="btn btn-secondary"><i class="fa-solid fa-arrow-left me-2"></i>Back to Dashboard</a>
+            </div>
         </div>
 
-        <!-- Department Cards -->
-        <div class="row">
-            <?php
-            // Array of departments with colors
-            $departments = [
-                ['name' => 'Computer Science and Engineering', 'color' => 'primary', 'icon' => 'fa-solid fa-laptop-code'],
-                ['name' => 'Electrical Engineering', 'color' => 'info', 'icon' => 'fa-solid fa-database'],
-                ['name' => 'Electronics and Communication', 'color' => 'secondary', 'icon' => 'fa-solid fa-microchip'],
-                ['name' => 'Mechanical Engineering', 'color' => 'warning', 'icon' => 'fa-solid fa-cogs'],
-                ['name' => 'Civil Engineering', 'color' => 'success', 'icon' => 'fa-solid fa-building']
-            ];
-            
-            foreach ($departments as $dept):
-            ?>
-            <div class="col-md-6 mb-4">
-                <div class="card dept-card shadow-sm">
-                    <div class="dept-header bg-<?php echo $dept['color']; ?>">
-                        <div class="d-flex align-items-center">
-                            <div class="header-icon">
-                                <i class="<?php echo $dept['icon']; ?> fa-lg"></i>
-                            </div>
-                            <h4 class="mb-0"><?php echo $dept['name']; ?></h4>
-                        </div>
+        <!-- Add Department Modal -->
+        <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addDepartmentModalLabel">Add New Department</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="card-body p-4">
-                        <div class="row justify-content-center">
-                            <div class="col-md-8">
-                                <div class="card upload-card p-3 shadow-sm">
-                                    <h5 class="mb-3"><i class="fa-solid fa-upload me-2"></i>Upload Student List</h5>
-                                    <form id="uploadForm-<?php echo strtolower(str_replace(' ', '-', $dept['name'])); ?>">
-                                        <div class="mb-3">
-                                            <label for="formFile-<?php echo strtolower(str_replace(' ', '-', $dept['name'])); ?>" class="form-label">Select File</label>
-                                            <input class="form-control" type="file" id="formFile-<?php echo strtolower(str_replace(' ', '-', $dept['name'])); ?>">
-                                            <div class="form-text">Upload CSV or Excel file</div>
-                                        </div>
-                                        <div class="form-check mb-3">
-                                            <input class="form-check-input" type="checkbox" id="check-<?php echo strtolower(str_replace(' ', '-', $dept['name'])); ?>">
-                                            <label class="form-check-label" for="check-<?php echo strtolower(str_replace(' ', '-', $dept['name'])); ?>">
-                                                Confirm Upload
-                                            </label>
-                                        </div>
-                                        <button class="btn btn-<?php echo $dept['color']; ?> w-100" id="uploadBtn-<?php echo strtolower(str_replace(' ', '-', $dept['name'])); ?>" disabled>
-                                            <i class="fa-solid fa-cloud-arrow-up me-2"></i>Upload
-                                        </button>
-                                    </form>
-                                </div>
+                    <form action="add_department.php" method="POST">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="department_name" class="form-label">Department Name</label>
+                                <input type="text" class="form-control" id="department_name" name="department_name" required placeholder="Enter department name">
                             </div>
                         </div>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fa-solid fa-plus me-2"></i>Add Department
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <?php endforeach; ?>
         </div>
+
+        <!-- Departments Table -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fa-solid fa-building me-2"></i>Departments List</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Department Name</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            // Fetch departments from database
+                            $sql = "SELECT d_id, department_name FROM department ORDER BY department_name";
+                            $result = $conn->query($sql);
+
+                            if ($result && $result->num_rows > 0):
+                                while ($row = $result->fetch_assoc()):
+                            ?>
+                                <tr>
+                                    <td><?php echo $row['d_id']; ?></td>
+                                    <td><?php echo htmlspecialchars($row['department_name']); ?></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success me-1" data-bs-toggle="modal" data-bs-target="#uploadModal<?php echo $row['d_id']; ?>">
+                                            <i class="fa-solid fa-upload me-1"></i>Upload Students
+                                        </button>
+                                        <button class="btn btn-sm btn-info me-1">
+                                            <i class="fa-solid fa-eye me-1"></i>View Details
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteDepartment(<?php echo $row['d_id']; ?>, '<?php echo htmlspecialchars($row['department_name'], ENT_QUOTES); ?>')">
+                                            <i class="fa-solid fa-trash me-1"></i>Delete
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- Upload Modal for each department -->
+                                <div class="modal fade" id="uploadModal<?php echo $row['d_id']; ?>" tabindex="-1" aria-labelledby="uploadModalLabel<?php echo $row['d_id']; ?>" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="uploadModalLabel<?php echo $row['d_id']; ?>">
+                                                    Upload Students - <?php echo htmlspecialchars($row['department_name']); ?>
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="uploadForm-<?php echo $row['d_id']; ?>">
+                                                    <div class="mb-3">
+                                                        <label for="formFile-<?php echo $row['d_id']; ?>" class="form-label">Select File</label>
+                                                        <input class="form-control" type="file" id="formFile-<?php echo $row['d_id']; ?>" accept=".csv,.xlsx,.xls">
+                                                        <div class="form-text">Upload CSV or Excel file containing student data</div>
+                                                    </div>
+                                                    <div class="form-check mb-3">
+                                                        <input class="form-check-input" type="checkbox" id="check-<?php echo $row['d_id']; ?>">
+                                                        <label class="form-check-label" for="check-<?php echo $row['d_id']; ?>">
+                                                            I confirm that the data is correct
+                                                        </label>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn btn-success" id="uploadBtn-<?php echo $row['d_id']; ?>" disabled>
+                                                    <i class="fa-solid fa-cloud-arrow-up me-1"></i>Upload
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php
+                                endwhile;
+                            else:
+                            ?>
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">No departments found.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden form for department deletion -->
+        <form id="deleteForm" action="delete_department.php" method="POST" style="display: none;">
+            <input type="hidden" id="deleteDepartmentId" name="department_id">
+        </form>
     </div>
 </div>
 
@@ -166,16 +236,28 @@ include('../config.php');
 <script>
     // Enable/disable upload buttons based on checkbox status
     document.addEventListener('DOMContentLoaded', function() {
-        <?php foreach ($departments as $dept): ?>
-        const deptId = "<?php echo strtolower(str_replace(' ', '-', $dept['name'])); ?>";
-        const checkbox = document.getElementById(`check-${deptId}`);
-        const uploadBtn = document.getElementById(`uploadBtn-${deptId}`);
+        // Get all checkboxes with IDs starting with "check-"
+        const checkboxes = document.querySelectorAll('[id^="check-"]');
         
-        checkbox.addEventListener('change', function() {
-            uploadBtn.disabled = !this.checked;
+        checkboxes.forEach(function(checkbox) {
+            const deptId = checkbox.id.replace('check-', '');
+            const uploadBtn = document.getElementById(`uploadBtn-${deptId}`);
+            
+            if (uploadBtn) {
+                checkbox.addEventListener('change', function() {
+                    uploadBtn.disabled = !this.checked;
+                });
+            }
         });
-        <?php endforeach; ?>
     });
+
+    // Function to delete department with confirmation
+    function deleteDepartment(departmentId, departmentName) {
+        if (confirm(`Are you sure you want to delete the department "${departmentName}"? This action cannot be undone.`)) {
+            document.getElementById('deleteDepartmentId').value = departmentId;
+            document.getElementById('deleteForm').submit();
+        }
+    }
 </script>
 </body>
 </html>

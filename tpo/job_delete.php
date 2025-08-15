@@ -23,7 +23,7 @@ if (!isset($_GET['job_id']) || empty($_GET['job_id'])) {
 $job_id = mysqli_real_escape_string($conn, $_GET['job_id']);
 
 // Delete job from database
-$query = "DELETE FROM jobs WHERE id = '$job_id'";
+$query = "DELETE FROM job WHERE id = '$job_id'";
 
 if (mysqli_query($conn, $query)) {
     // Deletion successful
