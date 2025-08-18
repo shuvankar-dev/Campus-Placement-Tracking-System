@@ -66,90 +66,10 @@ include('../config.php');
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h3>Student Management</h3>
             <div>
-                <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addStudentModal">
-                    <i class="fa-solid fa-user-plus me-2"></i>Add New Student
-                </button>
+                <a href="uplodeSTD.php" class="btn btn-success me-2">
+                    <i class="fa-solid fa-upload me-2"></i>Add New Students (CSV Upload)
+                </a>
                 <a href="tpo_dashboard.php" class="btn btn-secondary"><i class="fa-solid fa-arrow-left me-2"></i>Back to Dashboard</a>
-            </div>
-        </div>
-
-        <!-- Add Student Modal -->
-        <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addStudentModalLabel">Add New Student</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form action="add_student.php" method="POST">
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="sname" class="form-label">Student Name</label>
-                                    <input type="text" class="form-control" id="sname" name="sname" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="semail" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="semail" name="semail" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="dept_id" class="form-label">Department</label>
-                                    <select class="form-control" id="dept_id" name="dept_id" required>
-                                        <option value="">Select Department</option>
-                                        <?php
-                                        $dept_sql = "SELECT d_id, department_name FROM department ORDER BY department_name";
-                                        $dept_result = $conn->query($dept_sql);
-                                        while ($dept = $dept_result->fetch_assoc()) {
-                                            echo "<option value='{$dept['d_id']}'>{$dept['department_name']}</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="sphone" class="form-label">Phone Number</label>
-                                    <input type="tel" class="form-control" id="sphone" name="sphone" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="sdob" class="form-label">Date of Birth</label>
-                                    <input type="date" class="form-control" id="sdob" name="sdob" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="sgender" class="form-label">Gender</label>
-                                    <select class="form-control" id="sgender" name="sgender" required>
-                                        <option value="">Select Gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="scgpa" class="form-label">CGPA</label>
-                                    <input type="number" step="0.01" min="0" max="10" class="form-control" id="scgpa" name="scgpa" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="spassword" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="spassword" name="spassword" required>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="saddress" class="form-label">Address</label>
-                                <textarea class="form-control" id="saddress" name="saddress" rows="3" required></textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-success">
-                                <i class="fa-solid fa-user-plus me-2"></i>Add Student
-                            </button>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
 
