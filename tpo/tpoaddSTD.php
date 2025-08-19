@@ -1,3 +1,15 @@
+<?php
+// Include database and email configuration
+include('../config.php');
+include('../email_config.php');
+
+// Include PHPMailer
+require_once '../vendor/autoload.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+?>
+
 <form method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label>Select Department:</label>
@@ -55,14 +67,14 @@ if (isset($_POST['submit'])) {
                 try {
                     $mail = new PHPMailer(true);
                     $mail->isSMTP();
-                    $mail->Host       = 'smtp.gmail.com';
+                    $mail->Host       = $email_config['smtp_host'];
                     $mail->SMTPAuth   = true;
-                    $mail->Username   = '';  // Your Gmail
-                    $mail->Password   = '';     // Gmail app password
+                    $mail->Username   = $email_config['smtp_username'];
+                    $mail->Password   = $email_config['smtp_password'];
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                    $mail->Port       = 587;
+                    $mail->Port       = $email_config['smtp_port'];
 
-                    $mail->setFrom('', 'Campus Admin');
+                    $mail->setFrom($email_config['from_email'], $email_config['from_name']);
                     $mail->addAddress($semail, $sname);
 
                     $mail->isHTML(false);
