@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     // Validate input
     if (empty($department_name)) {
-        $_SESSION['message'] = 'Department name is required.';
+        $_SESSION['error'] = 'Department name is required.';
         header('Location: departments.php');
         exit();
     }
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $check_result = $check_stmt->get_result();
     
     if ($check_result->num_rows > 0) {
-        $_SESSION['message'] = 'Department already exists.';
+        $_SESSION['error'] = 'Department already exists.';
         header('Location: departments.php');
         exit();
     }
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($insert_stmt->execute()) {
         $_SESSION['message'] = 'Department added successfully!';
     } else {
-        $_SESSION['message'] = 'Error adding department: ' . $conn->error;
+        $_SESSION['error'] = 'Error adding department: ' . $connection->error;
     }
     
     $insert_stmt->close();

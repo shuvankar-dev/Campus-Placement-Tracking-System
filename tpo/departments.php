@@ -101,6 +101,13 @@ include('../config.php');
             </div>
         <?php endif; ?>
 
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h3>Department Details</h3>
             <div>
@@ -165,11 +172,8 @@ include('../config.php');
                                     <td><?php echo $row['d_id']; ?></td>
                                     <td><?php echo htmlspecialchars($row['department_name']); ?></td>
                                     <td>
-                                        <button class="btn btn-sm btn-success me-1" data-bs-toggle="modal" data-bs-target="#uploadModal<?php echo $row['d_id']; ?>">
-                                            <i class="fa-solid fa-upload me-1"></i>Upload Students
-                                        </button>
-                                        <button class="btn btn-sm btn-info me-1">
-                                            <i class="fa-solid fa-eye me-1"></i>View Details
+                                        <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editDepartmentModal<?php echo $row['d_id']; ?>">
+                                            <i class="fa-solid fa-edit me-1"></i>Update
                                         </button>
                                         <button class="btn btn-sm btn-danger" onclick="deleteDepartment(<?php echo $row['d_id']; ?>, '<?php echo htmlspecialchars($row['department_name'], ENT_QUOTES); ?>')">
                                             <i class="fa-solid fa-trash me-1"></i>Delete
@@ -177,37 +181,31 @@ include('../config.php');
                                     </td>
                                 </tr>
 
-                                <!-- Upload Modal for each department -->
-                                <div class="modal fade" id="uploadModal<?php echo $row['d_id']; ?>" tabindex="-1" aria-labelledby="uploadModalLabel<?php echo $row['d_id']; ?>" aria-hidden="true">
+                                <!-- Edit Department Modal for each department -->
+                                <div class="modal fade" id="editDepartmentModal<?php echo $row['d_id']; ?>" tabindex="-1" aria-labelledby="editDepartmentModalLabel<?php echo $row['d_id']; ?>" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="uploadModalLabel<?php echo $row['d_id']; ?>">
-                                                    Upload Students - <?php echo htmlspecialchars($row['department_name']); ?>
+                                                <h5 class="modal-title" id="editDepartmentModalLabel<?php echo $row['d_id']; ?>">
+                                                    Edit Department
                                                 </h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <div class="modal-body">
-                                                <form id="uploadForm-<?php echo $row['d_id']; ?>">
+                                            <form action="update_department.php" method="POST">
+                                                <div class="modal-body">
+                                                    <input type="hidden" name="department_id" value="<?php echo $row['d_id']; ?>">
                                                     <div class="mb-3">
-                                                        <label for="formFile-<?php echo $row['d_id']; ?>" class="form-label">Select File</label>
-                                                        <input class="form-control" type="file" id="formFile-<?php echo $row['d_id']; ?>" accept=".csv,.xlsx,.xls">
-                                                        <div class="form-text">Upload CSV or Excel file containing student data</div>
+                                                        <label for="edit_department_name_<?php echo $row['d_id']; ?>" class="form-label">Department Name</label>
+                                                        <input type="text" class="form-control" id="edit_department_name_<?php echo $row['d_id']; ?>" name="department_name" value="<?php echo htmlspecialchars($row['department_name']); ?>" required placeholder="Enter department name">
                                                     </div>
-                                                    <div class="form-check mb-3">
-                                                        <input class="form-check-input" type="checkbox" id="check-<?php echo $row['d_id']; ?>">
-                                                        <label class="form-check-label" for="check-<?php echo $row['d_id']; ?>">
-                                                            I confirm that the data is correct
-                                                        </label>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                <button type="button" class="btn btn-success" id="uploadBtn-<?php echo $row['d_id']; ?>" disabled>
-                                                    <i class="fa-solid fa-cloud-arrow-up me-1"></i>Upload
-                                                </button>
-                                            </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-warning">
+                                                        <i class="fa-solid fa-save me-2"></i>Update Department
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -234,23 +232,6 @@ include('../config.php');
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Enable/disable upload buttons based on checkbox status
-    document.addEventListener('DOMContentLoaded', function() {
-        // Get all checkboxes with IDs starting with "check-"
-        const checkboxes = document.querySelectorAll('[id^="check-"]');
-        
-        checkboxes.forEach(function(checkbox) {
-            const deptId = checkbox.id.replace('check-', '');
-            const uploadBtn = document.getElementById(`uploadBtn-${deptId}`);
-            
-            if (uploadBtn) {
-                checkbox.addEventListener('change', function() {
-                    uploadBtn.disabled = !this.checked;
-                });
-            }
-        });
-    });
-
     // Function to delete department with confirmation
     function deleteDepartment(departmentId, departmentName) {
         if (confirm(`Are you sure you want to delete the department "${departmentName}"? This action cannot be undone.`)) {
