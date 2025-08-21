@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $row = $result->fetch_assoc();
 
         if (password_verify($password, $row['password'])) {
-            $_SESSION['tpo_id'] = $row['id'];
+            $_SESSION['tpo_id'] = $row['tpo_id'];
             $_SESSION['tpo_first_name'] = $row['first_name'];
             $_SESSION['tpo_last_name'] = $row['last_name'];
             $_SESSION['tpo_email'] = $row['email'];

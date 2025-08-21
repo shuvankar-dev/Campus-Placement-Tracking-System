@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     // Validate dates
-    if ($last_date_apply >= $campus_date) {
+    if ($last_date_apply > $campus_date) {
         $_SESSION['message'] = "Last date to apply must be before the campus date.";
         header("Location: jobs.php");
         exit();

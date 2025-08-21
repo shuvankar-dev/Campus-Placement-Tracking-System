@@ -207,7 +207,7 @@ include('../config.php');
                                         while ($app = $applications_result->fetch_assoc()):
                                     ?>
                                         <tr>
-                                            <td><?php echo $app['app_id']; ?></td>
+                                            <td><?php echo $app['id']; ?></td>
                                             <td><?php echo htmlspecialchars($app['sname'] ?? 'N/A'); ?></td>
                                             <td><?php echo htmlspecialchars($app['company_name'] ?? 'N/A'); ?></td>
                                             <td><?php echo htmlspecialchars($app['job_title'] ?? 'N/A'); ?></td>
@@ -226,14 +226,14 @@ include('../config.php');
                                                 <span class="badge <?php echo $badge_class; ?>"><?php echo $status; ?></span>
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-info me-1" data-bs-toggle="modal" data-bs-target="#viewAppModal<?php echo $app['app_id']; ?>" title="View Details">
+                                                <button class="btn btn-sm btn-info me-1" data-bs-toggle="modal" data-bs-target="#viewAppModal<?php echo $app['id']; ?>" title="View Details">
                                                     <i class="fa-solid fa-eye"></i>
                                                 </button>
                                                 <div class="btn-group" role="group">
-                                                    <button class="btn btn-sm btn-success" onclick="updateStatus(<?php echo $app['app_id']; ?>, 'Approved')" title="Approve">
+                                                    <button class="btn btn-sm btn-success" onclick="updateStatus(<?php echo $app['id']; ?>, 'Approved')" title="Approve">
                                                         <i class="fa-solid fa-check"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-danger" onclick="updateStatus(<?php echo $app['app_id']; ?>, 'Rejected')" title="Reject">
+                                                    <button class="btn btn-sm btn-danger" onclick="updateStatus(<?php echo $app['id']; ?>, 'Rejected')" title="Reject">
                                                         <i class="fa-solid fa-times"></i>
                                                     </button>
                                                 </div>
@@ -241,7 +241,7 @@ include('../config.php');
                                         </tr>
 
                                         <!-- View Application Modal -->
-                                        <div class="modal fade" id="viewAppModal<?php echo $app['app_id']; ?>" tabindex="-1">
+                                        <div class="modal fade" id="viewAppModal<?php echo $app['id']; ?>" tabindex="-1">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -251,7 +251,7 @@ include('../config.php');
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-md-6 mb-3">
-                                                                <strong>Application ID:</strong> <?php echo $app['app_id']; ?>
+                                                                <strong>Application ID:</strong> <?php echo $app['id']; ?>
                                                             </div>
                                                             <div class="col-md-6 mb-3">
                                                                 <strong>Student Name:</strong> <?php echo htmlspecialchars($app['sname'] ?? 'N/A'); ?>
@@ -302,7 +302,7 @@ include('../config.php');
                         <div class="row">
                             <?php
                             $companies_sql = "SELECT DISTINCT j.company_name, j.company_url, 
-                                             COUNT(a.app_id) as total_applications,
+                                             COUNT(a.id) as total_applications,
                                              SUM(CASE WHEN a.status = 'Approved' THEN 1 ELSE 0 END) as approved_count
                                              FROM job j 
                                              LEFT JOIN applications a ON j.id = a.job_id 
@@ -455,7 +455,7 @@ include('../config.php');
 
         <!-- Hidden forms for status updates -->
         <form id="statusUpdateForm" action="update_application_status.php" method="POST" style="display: none;">
-            <input type="hidden" id="updateAppId" name="app_id">
+            <input type="hidden" id="updateAppId" name="id">
             <input type="hidden" id="updateStatus" name="status">
         </form>
     </div>
