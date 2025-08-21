@@ -6,8 +6,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Use correct table name -> student (not students)
-    $query = "SELECT * FROM student WHERE semail='$email' AND spassword='$password'";
+    // Join with department table to get department name
+    $query = "SELECT s.*, d.department_name 
+              FROM student s 
+              LEFT JOIN department d ON s.dept_id = d.d_id 
+              WHERE s.semail='$email' AND s.spassword='$password'";
     $result = mysqli_query($conn, $query);
 
     if (mysqli_num_rows($result) == 1) {
