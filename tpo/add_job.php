@@ -24,11 +24,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     // Validate dates
-    if ($last_date_apply > $campus_date) {
-        $_SESSION['message'] = "Last date to apply must be before the campus date.";
-        header("Location: jobs.php");
-        exit();
-    }
+    $campus_dt = new DateTime($campus_date);
+    $last_apply_dt = new DateTime($last_date_apply);
+
+    // TODO: Need to fix this Validation Logic
+    // Suggestion : 
+    // 1. No Need to Close Modal
+    // 2. Campus Date can not less than today!
+    
+    // if ($last_apply_dt > $campus_dt) {
+    //     $_SESSION['message'] = "Last date to apply must be before the campus date.";
+    //     header("Location: jobs.php");
+    //     exit();
+    // }
+
     
     // Prepare and execute SQL statement
     $stmt = $conn->prepare("INSERT INTO job (job_title, company_name, campus_date, last_date_apply, job_description, company_url) VALUES (?, ?, ?, ?, ?, ?)");

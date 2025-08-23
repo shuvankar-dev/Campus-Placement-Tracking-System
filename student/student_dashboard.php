@@ -11,12 +11,13 @@ $student_name = $_SESSION['std_info']['sname'];
 $student_email = $_SESSION['std_info']['semail'];
 $student_cgpa = $_SESSION['std_info']['scgpa'];
 
+include('../config.php');
+
 // Handle department name - fetch from database if not in session
 if (isset($_SESSION['std_info']['department_name'])) {
     $student_department = $_SESSION['std_info']['department_name'];
 } else {
     // Fetch department name from database using dept_id
-    include('../config.php');
     $dept_id = $_SESSION['std_info']['dept_id'] ?? null;
     if ($dept_id) {
         $dept_query = "SELECT department_name FROM department WHERE d_id = $dept_id";
@@ -97,7 +98,6 @@ if (isset($_SESSION['std_info']['department_name'])) {
 
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="../assets/images/user.png" alt="Profile" width="40" height="40" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                     <li><h6 class="dropdown-header"><?php echo htmlspecialchars($student_email); ?></h6></li>
@@ -113,13 +113,15 @@ if (isset($_SESSION['std_info']['department_name'])) {
     <div class="d-flex" id="wrapper">
     
      <!-- Sidebar -->
-    <div class="text-bg-success p-3" style="width: 250px; min-height: 100vh;">
+    <div class="text-bg-primary p-3" style="width: 250px; min-height: 100vh;">
         <h4 class="mb-4">Student Panel</h4>
         <ul class="nav flex-column">
             <li class="nav-item mb-2"><a href="#" class="nav-link text-white">Dashboard</a></li>
             <li class="nav-item mb-2"><a href="departments.php" class="nav-link text-white">Departments</a></li>
             <li class="nav-item mb-2"><a href="campus_placements.php" class="nav-link text-white">Campus Placements</a></li>
             <li class="nav-item mb-2"><a href="my_applications.php" class="nav-link text-white">My Applications</a></li>
+            <li class="nav-item mb-2"><a href="approved_applications.php" class="nav-link text-white">Approved Applications</a></li>
+            <li class="nav-item mb-2"><a href="upcoming_deadlines.php" class="nav-link text-white">Upcoming Deadlines</a></li>
             <li class="nav-item mb-2"><a href="profile.php" class="nav-link text-white"><i class="fa-solid fa-user me-2"></i>Profile</a></li>
             <li class="nav-item mb-2"><a href="#" class="nav-link text-white"><i class="fa-solid fa-gear me-2"></i>Settings</a></li>
         </ul>
@@ -129,40 +131,25 @@ if (isset($_SESSION['std_info']['department_name'])) {
         <!-- Enhanced Welcome Section -->
         <div class="row mb-4">
             <div class="col-12">
-                <div class="card border-0 shadow-lg position-relative overflow-hidden" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                <div class="card border-0 shadow-lg position-relative overflow-hidden" style="background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);">
                     <div class="card-body text-white p-4">
                         <div class="row align-items-center">
                             <div class="col-md-8">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="bg-white bg-opacity-20 rounded-circle p-3 me-4">
-                                        <i class="fa-solid fa-user-graduate fa-2x text-white"></i>
-                                    </div>
-                                    <div>
-                                        <h2 class="mb-1 fw-bold">Welcome back, <?php echo htmlspecialchars($student_name); ?>! 👋</h2>
-                                        <p class="mb-0 fs-5 opacity-90">Ready to explore new opportunities today?</p>
-                                    </div>
+                                <div class="mb-3">
+                                    <h2 class="mb-1 fw-bold">Welcome back, <?php echo htmlspecialchars($student_name); ?>! 👋</h2>
+                                    <p class="mb-0 fs-5 opacity-90">Ready to explore new opportunities today?</p>
                                 </div>
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <div class="d-flex align-items-center">
-                                            <div class="bg-white bg-opacity-20 rounded p-2 me-3">
-                                                <i class="fa-solid fa-building-columns text-white"></i>
-                                            </div>
-                                            <div>
-                                                <small class="opacity-75">Department</small>
-                                                <div class="fw-semibold"><?php echo htmlspecialchars($student_department); ?></div>
-                                            </div>
+                                        <div>
+                                            <small class="opacity-75">Department</small>
+                                            <div class="fw-semibold"><?php echo htmlspecialchars($student_department); ?></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="d-flex align-items-center">
-                                            <div class="bg-white bg-opacity-20 rounded p-2 me-3">
-                                                <i class="fa-solid fa-chart-line text-white"></i>
-                                            </div>
-                                            <div>
-                                                <small class="opacity-75">CGPA</small>
-                                                <div class="fw-semibold"><?php echo htmlspecialchars($student_cgpa); ?></div>
-                                            </div>
+                                        <div>
+                                            <small class="opacity-75">CGPA</small>
+                                            <div class="fw-semibold"><?php echo htmlspecialchars($student_cgpa); ?></div>
                                         </div>
                                     </div>
                                 </div>
@@ -233,7 +220,7 @@ if (isset($_SESSION['std_info']['department_name'])) {
                         <small>Selected Applications</small>
                     </div>
                     <div class="card-footer text-bg-light p-3">
-                        <a href="my_applications.php" class="text-dark text-decoration-none">View Details →</a>
+                        <a href="approved_applications.php" class="text-dark text-decoration-none">View Details →</a>
                     </div>
                 </div>
             </div>
@@ -250,7 +237,7 @@ if (isset($_SESSION['std_info']['department_name'])) {
                         <small>Application Deadlines</small>
                     </div>
                     <div class="card-footer text-bg-light p-3">
-                        <a href="campus_placements.php" class="text-dark text-decoration-none">View Details →</a>
+                        <a href="upcoming_deadlines.php" class="text-dark text-decoration-none">View Details →</a>
                     </div>
                 </div>
             </div>
