@@ -98,6 +98,9 @@ if (isset($_SESSION['std_info']['department_name'])) {
 
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                     <li><h6 class="dropdown-header"><?php echo htmlspecialchars($student_email); ?></h6></li>
@@ -116,14 +119,11 @@ if (isset($_SESSION['std_info']['department_name'])) {
     <div class="text-bg-primary p-3" style="width: 250px; min-height: 100vh;">
         <h4 class="mb-4">Student Panel</h4>
         <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a href="#" class="nav-link text-white">Dashboard</a></li>
-            <li class="nav-item mb-2"><a href="departments.php" class="nav-link text-white">Departments</a></li>
-            <li class="nav-item mb-2"><a href="campus_placements.php" class="nav-link text-white">Campus Placements</a></li>
-            <li class="nav-item mb-2"><a href="my_applications.php" class="nav-link text-white">My Applications</a></li>
-            <li class="nav-item mb-2"><a href="approved_applications.php" class="nav-link text-white">Approved Applications</a></li>
-            <li class="nav-item mb-2"><a href="upcoming_deadlines.php" class="nav-link text-white">Upcoming Deadlines</a></li>
-            <li class="nav-item mb-2"><a href="profile.php" class="nav-link text-white"><i class="fa-solid fa-user me-2"></i>Profile</a></li>
-            <li class="nav-item mb-2"><a href="#" class="nav-link text-white"><i class="fa-solid fa-gear me-2"></i>Settings</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link text-white active fw-bold"><i class="fa-solid fa-home me-2"></i>Dashboard</a></li>
+            <li class="nav-item mb-2"><a href="campus_placements.php" class="nav-link text-white"><i class="fa-solid fa-briefcase me-2"></i>Campus Placements</a></li>
+            <li class="nav-item mb-2"><a href="my_applications.php" class="nav-link text-white"><i class="fa-solid fa-file-lines me-2"></i>My Applications</a></li>
+            <li class="nav-item mb-2"><a href="approved_applications.php" class="nav-link text-white"><i class="fa-solid fa-check-circle me-2"></i>Approved Applications</a></li>
+            <li class="nav-item mb-2"><a href="upcoming_deadlines.php" class="nav-link text-white"><i class="fa-solid fa-clock me-2"></i>Upcoming Deadlines</a></li>
         </ul>
     </div>
 

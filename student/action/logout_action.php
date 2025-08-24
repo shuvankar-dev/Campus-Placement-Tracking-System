@@ -7,12 +7,12 @@ session_unset();
 // Destroy the session
 session_destroy();
 
-// Clear session cookie
+// Clear session cookie for complete security
 if (isset($_COOKIE[session_name()])) {
     setcookie(session_name(), '', time() - 3600, '/');
 }
 
-// Redirect to main index page
-header("Location: ../index.php");
+// Redirect to student login page
+header("Location: ../login.php");
 exit();
 ?>

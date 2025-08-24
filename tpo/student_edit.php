@@ -50,7 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['student_id'])) {
         </span>
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="../assets/images/user.png" alt="Profile" width="40" height="40" class="rounded-circle">
+                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <i class="fa-solid fa-user-tie"></i>
+                </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                 <li><h6 class="dropdown-header"><?php echo $_SESSION['tpo_email']; ?></h6></li>
