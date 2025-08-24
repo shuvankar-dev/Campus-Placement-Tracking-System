@@ -85,7 +85,7 @@ include('../config.php');
                         <h5 class="mb-0"><i class="fa-solid fa-upload me-2"></i>Upload Students CSV File</h5>
                     </div>
                     <div class="card-body">
-                        <form action="tpoaddSTD.php" method="POST" enctype="multipart/form-data">
+                        <form action="tpoaddSTD.php" method="post" enctype="multipart/form-data">
                             <div class="mb-4">
                                 <label for="dept_id" class="form-label">
                                     <i class="fa-solid fa-building me-2"></i>Select Department

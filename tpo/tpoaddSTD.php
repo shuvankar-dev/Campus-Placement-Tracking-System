@@ -10,17 +10,12 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 ?>
 
-<form method="post" enctype="multipart/form-data">
+<!-- <form method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label>Select Department:</label>
             <select name="dept_id" class="form-select" required>
                 <option value="">-- Choose Department --</option>
-                <?php
-                $dept_rs = mysqli_query($connection, "SELECT * FROM department ORDER BY dept_name");
-                while ($dept = mysqli_fetch_assoc($dept_rs)) {
-                    echo "<option value='{$dept['dept_id']}'>{$dept['dept_name']}</option>";
-                }
-                ?>
+                
             </select>
         </div>
         <div class="mb-3">
@@ -28,12 +23,12 @@ use PHPMailer\PHPMailer\Exception;
             <input type="file" name="csv_file" class="form-control" accept=".csv" required>
         </div>
         <button type="submit" name="submit" class="btn btn-primary">Upload</button>
-    </form>
+    </form> -->
 
 
 
 <?php
-if (isset($_POST['submit'])) {
+// if (isset($_POST['submit'])) {
     $dept_id = $_POST['dept_id'];
 
     if ($_FILES['csv_file']['name']) {
@@ -48,21 +43,43 @@ if (isset($_POST['submit'])) {
             $spassword = rand(10000000, 99999999);
             $hashed = password_hash($spassword, PASSWORD_DEFAULT);
 
-            $dateObj = DateTime::createFromFormat('d-m-Y', $sdob);
-            
+            // $dateObj = DateTime::createFromFormat('d-m-Y', $sdob);
+
+            // echo $dateObj."<br>";
+            // if($dateObj) {
+            //     $formattedDob = $dateObj->format('Y-m-d');
+            // } else {
+            //     $formattedDob = '0000-00-00'; // fallback or log this error
+            // }
+            // echo $formattedDob."<br>";
+
+            $sdob = trim($sdob); // remove spaces
+
+            // Try multiple possible formats
+            $formats = ['d-m-Y', 'Y-m-d', 'd/m/Y', 'm/d/Y'];
+            $dateObj = false;
+
+            foreach ($formats as $format) {
+                $dateObj = DateTime::createFromFormat($format, $sdob);
+                if ($dateObj !== false) break;
+            }
+
             if ($dateObj) {
                 $formattedDob = $dateObj->format('Y-m-d');
             } else {
-                $formattedDob = '0000-00-00'; // fallback or log this error
+                $formattedDob = '0000-00-00'; // fallback
+                echo "Invalid DOB format for $sname ($sdob)<br>";
             }
 
+            echo $formattedDob."<br>";
 
             $query = "INSERT INTO student 
                 (dept_id, spassword, sname, semail, sdob, sphone, sgender, scgpa, saddress)
                 VALUES 
                 ('$dept_id', '$hashed', '$sname', '$semail', '$formattedDob', '$sphone', '$sgender', '$scgpa', '$saddress')";
+                // echo $query;
 
-            if (mysqli_query($connection, $query)) {
+            if (mysqli_query($conn, $query)) {
                 // Send email
                 try {
                     $mail = new PHPMailer(true);
@@ -92,5 +109,5 @@ if (isset($_POST['submit'])) {
         fclose($file);
         echo "Upload complete";
     }
-}
+// }
 ?>
