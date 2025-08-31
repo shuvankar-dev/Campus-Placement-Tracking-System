@@ -81,6 +81,38 @@ include('../config.php');
                 <h5 class="mb-0"><i class="fa-solid fa-users me-2"></i>Students List</h5>
             </div>
             <div class="card-body">
+                <!-- Filter and Search Section -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <label for="departmentFilter" class="form-label">
+                            <i class="fa-solid fa-building me-2"></i>Filter by Department
+                        </label>
+                        <select class="form-select" id="departmentFilter" onchange="filterStudents()">
+                            <option value="">All Departments</option>
+                            <?php
+                            // Fetch departments for filter dropdown
+                            $dept_sql = "SELECT d_id, department_name FROM department ORDER BY department_name";
+                            $dept_result = $conn->query($dept_sql);
+                            while ($dept = $dept_result->fetch_assoc()) {
+                                $selected = (isset($_GET['dept_id']) && $_GET['dept_id'] == $dept['d_id']) ? 'selected' : '';
+                                echo "<option value='{$dept['d_id']}' $selected>{$dept['department_name']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="searchInput" class="form-label">
+                            <i class="fa-solid fa-search me-2"></i>Search Students
+                        </label>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search by name, email, or phone..." onkeyup="filterStudents()" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="button" class="btn btn-outline-secondary" onclick="clearFilters()">
+                            <i class="fa-solid fa-refresh me-2"></i>Clear Filters
+                        </button>
+                    </div>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead class="table-primary">
@@ -95,12 +127,29 @@ include('../config.php');
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="studentsTableBody">
                             <?php
+                            // Build SQL query with filters
+                            $where_conditions = [];
+                            $search_term = isset($_GET['search']) ? trim($_GET['search']) : '';
+                            $dept_filter = isset($_GET['dept_id']) ? (int)$_GET['dept_id'] : 0;
+                            
+                            if ($dept_filter > 0) {
+                                $where_conditions[] = "s.dept_id = $dept_filter";
+                            }
+                            
+                            if (!empty($search_term)) {
+                                $search_escaped = mysqli_real_escape_string($conn, $search_term);
+                                $where_conditions[] = "(s.sname LIKE '%$search_escaped%' OR s.semail LIKE '%$search_escaped%' OR s.sphone LIKE '%$search_escaped%' OR d.department_name LIKE '%$search_escaped%')";
+                            }
+                            
+                            $where_clause = !empty($where_conditions) ? "WHERE " . implode(" AND ", $where_conditions) : "";
+                            
                             // Fetch students with department information
                             $sql = "SELECT s.*, d.department_name 
                                    FROM student s 
                                    LEFT JOIN department d ON s.dept_id = d.d_id 
+                                   $where_clause
                                    ORDER BY s.sname";
                             $result = $conn->query($sql);
 
@@ -184,6 +233,25 @@ include('../config.php');
                         </tbody>
                     </table>
                 </div>
+                
+                <!-- Results Summary -->
+                <div class="mt-3 text-muted">
+                    <small>
+                        <i class="fa-solid fa-info-circle me-1"></i>
+                        Showing <?php echo $result ? $result->num_rows : 0; ?> student(s)
+                        <?php if (!empty($search_term)): ?>
+                            matching "<?php echo htmlspecialchars($search_term); ?>"
+                        <?php endif; ?>
+                        <?php if ($dept_filter > 0): ?>
+                            <?php
+                            $dept_name_sql = "SELECT department_name FROM department WHERE d_id = $dept_filter";
+                            $dept_name_result = $conn->query($dept_name_sql);
+                            $dept_name = $dept_name_result->fetch_assoc()['department_name'];
+                            ?>
+                            in <?php echo htmlspecialchars($dept_name); ?>
+                        <?php endif; ?>
+                    </small>
+                </div>
             </div>
         </div>
 
@@ -220,6 +288,54 @@ include('../config.php');
             document.getElementById('deleteStudentForm').submit();
         }
     }
+
+    // Function to filter students
+    function filterStudents() {
+        const deptFilter = document.getElementById('departmentFilter').value;
+        const searchInput = document.getElementById('searchInput').value;
+        
+        // Build URL with filters
+        let url = 'students.php?';
+        const params = [];
+        
+        if (deptFilter) {
+            params.push('dept_id=' + encodeURIComponent(deptFilter));
+        }
+        
+        if (searchInput.trim()) {
+            params.push('search=' + encodeURIComponent(searchInput.trim()));
+        }
+        
+        if (params.length > 0) {
+            url += params.join('&');
+        } else {
+            url = 'students.php';
+        }
+        
+        // Redirect to filtered page
+        window.location.href = url;
+    }
+
+    // Function to clear all filters
+    function clearFilters() {
+        window.location.href = 'students.php';
+    }
+
+    // Auto-filter on Enter key press in search box
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            filterStudents();
+        }
+    });
+
+    // Real-time search with debounce
+    let searchTimeout;
+    document.getElementById('searchInput').addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function() {
+            filterStudents();
+        }, 500); // Wait 500ms after user stops typing
+    });
 </script>
 </body>
 </html>

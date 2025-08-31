@@ -112,7 +112,7 @@ include('../config.php');
                             </div>
 
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-success btn-lg">
+                                <button type="submit" name="submit" class="btn btn-success btn-lg">
                                     <i class="fa-solid fa-upload me-2"></i>Upload Students
                                 </button>
                             </div>
@@ -137,14 +137,12 @@ include('../config.php');
                                         <th>Column 4</th>
                                         <th>Column 5</th>
                                         <th>Column 6</th>
-                                        <th>Column 7</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>sname</td>
                                         <td>semail</td>
-                                        <td>spassword</td>
                                         <td>sdob</td>
                                         <td>sphone</td>
                                         <td>sgender</td>
@@ -153,7 +151,6 @@ include('../config.php');
                                     <tr>
                                         <td>John Doe</td>
                                         <td>john@college.edu</td>
-                                        <td>password123</td>
                                         <td>2000-05-15</td>
                                         <td>1234567890</td>
                                         <td>Male</td>
@@ -171,6 +168,8 @@ include('../config.php');
                                 <li>Gender should be: Male, Female, or Other</li>
                                 <li>CGPA should be between 0 and 10</li>
                                 <li>Email addresses must be unique</li>
+                                <li><strong>Passwords will be auto-generated (8-digit numbers)</strong></li>
+                                <li>Students will receive their login credentials via email</li>
                                 <li>All fields are required</li>
                             </ul>
                         </div>
@@ -190,8 +189,8 @@ include('../config.php');
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function downloadSample() {
-        // Create sample CSV content
-        const csvContent = 'John Doe,john.doe@college.edu,password123,2000-05-15,1234567890,Male,8.5\nJane Smith,jane.smith@college.edu,password456,2001-08-22,0987654321,Female,9.2\nMike Johnson,mike.johnson@college.edu,password789,2000-12-10,5551234567,Male,7.8';
+        // Create sample CSV content (without password - auto-generated)
+        const csvContent = 'John Doe,john.doe@college.edu,2000-05-15,1234567890,Male,8.5\nJane Smith,jane.smith@college.edu,2001-08-22,0987654321,Female,9.2\nMike Johnson,mike.johnson@college.edu,2000-12-10,5551234567,Male,7.8';
         
         // Create and download file
         const blob = new Blob([csvContent], { type: 'text/csv' });
