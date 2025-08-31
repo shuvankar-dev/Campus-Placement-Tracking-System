@@ -12,7 +12,7 @@ if (isset($_COOKIE[session_name()])) {
     setcookie(session_name(), '', time() - 3600, '/');
 }
 
-// Redirect to student login page
-header("Location: ../login.php");
+// Redirect to main campus placement homepage
+header("Location: ../../index.php");
 exit();
 ?>
