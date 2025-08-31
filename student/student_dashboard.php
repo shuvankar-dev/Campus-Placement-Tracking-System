@@ -89,6 +89,11 @@ if (isset($_SESSION['std_info']['department_name'])) {
 <body class="bg-light">
     <!-- Top Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light text-bg-light p-3 shadow-sm px-4">
+        <!-- Mobile hamburger menu button -->
+        <button class="btn btn-outline-primary d-md-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        
         <a class="navbar-brand" href="#">Student Dashboard</a>
 
         <div class="ms-auto d-flex align-items-center">
@@ -115,8 +120,8 @@ if (isset($_SESSION['std_info']['department_name'])) {
 
     <div class="d-flex" id="wrapper">
     
-     <!-- Sidebar -->
-    <div class="text-bg-primary p-3" style="width: 250px; min-height: 100vh;">
+     <!-- Desktop Sidebar -->
+    <div class="text-bg-primary p-3 d-none d-md-block" style="width: 250px; min-height: 100vh;">
         <h4 class="mb-4">Student Panel</h4>
         <ul class="nav flex-column">
             <li class="nav-item mb-2"><a href="#" class="nav-link text-white active fw-bold"><i class="fa-solid fa-home me-2"></i>Dashboard</a></li>
@@ -125,6 +130,25 @@ if (isset($_SESSION['std_info']['department_name'])) {
             <li class="nav-item mb-2"><a href="approved_applications.php" class="nav-link text-white"><i class="fa-solid fa-check-circle me-2"></i>Approved Applications</a></li>
             <li class="nav-item mb-2"><a href="upcoming_deadlines.php" class="nav-link text-white"><i class="fa-solid fa-clock me-2"></i>Upcoming Deadlines</a></li>
         </ul>
+    </div>
+
+    <!-- Mobile Sidebar (Offcanvas) -->
+    <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel" style="background: #0d6efd;">
+        <div class="offcanvas-header text-white">
+            <h5 class="offcanvas-title fw-bold" id="sidebarOffcanvasLabel">
+                <i class="fa-solid fa-graduation-cap me-2"></i>Student Panel
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2"><a href="#" class="nav-link text-white active fw-bold"><i class="fa-solid fa-home me-2"></i>Dashboard</a></li>
+                <li class="nav-item mb-2"><a href="campus_placements.php" class="nav-link text-white"><i class="fa-solid fa-briefcase me-2"></i>Campus Placements</a></li>
+                <li class="nav-item mb-2"><a href="my_applications.php" class="nav-link text-white"><i class="fa-solid fa-file-lines me-2"></i>My Applications</a></li>
+                <li class="nav-item mb-2"><a href="approved_applications.php" class="nav-link text-white"><i class="fa-solid fa-check-circle me-2"></i>Approved Applications</a></li>
+                <li class="nav-item mb-2"><a href="upcoming_deadlines.php" class="nav-link text-white"><i class="fa-solid fa-clock me-2"></i>Upcoming Deadlines</a></li>
+            </ul>
+        </div>
     </div>
 
     <div class="container-fluid p-4">

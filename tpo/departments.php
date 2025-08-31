@@ -55,6 +55,11 @@ include('../config.php');
 
 <!-- Top Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+    <!-- Mobile hamburger menu button -->
+    <button class="btn btn-outline-primary d-md-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+    
     <a class="navbar-brand" href="#">TPO Dashboard</a>
     <div class="ms-auto d-flex align-items-center">
         <span class="me-3 fw-semibold text-capitalize">
@@ -69,7 +74,6 @@ include('../config.php');
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                 <li><h6 class="dropdown-header"><?php echo $_SESSION['tpo_email']; ?></h6></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
                 <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
             </ul>
         </div>
@@ -79,19 +83,85 @@ include('../config.php');
 <!-- Wrapper -->
 <div class="d-flex" id="wrapper">
 
-    <!-- Sidebar -->
-    <div class="bg-primary text-white p-3" style="width: 250px; min-height: 100vh;">
-        <h4 class="mb-4">TPO Panel</h4>
+    <!-- Desktop Sidebar -->
+    <div class="p-3 d-none d-md-block" style="width: 250px; min-height: 100vh; background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);">
+        <div class="text-center mb-4">
+            <div class="bg-white text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 60px; height: 60px;">
+                <i class="fa-solid fa-user-tie fa-2x"></i>
+            </div>
+            <h5 class="text-white mb-0">TPO Panel</h5>
+            <small class="text-white-50">Training & Placement</small>
+        </div>
         <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a href="tpo_dashboard.php" class="nav-link text-white">Dashboard</a></li>
-            <li class="nav-item mb-2"><a href="#" class="nav-link text-white active fw-bold">Departments</a></li>
-            <li class="nav-item mb-2"><a href="#" class="nav-link text-white">Students</a></li>
-            <li class="nav-item mb-2"><a href="jobs.php" class="nav-link text-white">Job Posts</a></li>
-            <li class="nav-item mb-2"><a href="#" class="nav-link text-white">Applications</a></li>
-            <li class="nav-item mb-2"><a href="#" class="nav-link text-white"><i class="fa-solid fa-gear me-2"></i>Settings</a></li>
-
-
+            <li class="nav-item mb-2">
+                <a href="tpo_dashboard.php" class="nav-link text-white">
+                    <i class="fa-solid fa-tachometer-alt me-3"></i>Dashboard
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="departments.php" class="nav-link text-white active fw-bold">
+                    <i class="fa-solid fa-building me-3"></i>Departments
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="students.php" class="nav-link text-white">
+                    <i class="fa-solid fa-graduation-cap me-3"></i>Students
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="jobs.php" class="nav-link text-white">
+                    <i class="fa-solid fa-briefcase me-3"></i>Job Posts
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="applications.php" class="nav-link text-white">
+                    <i class="fa-solid fa-file-text me-3"></i>Applications
+                </a>
+            </li>
         </ul>
+    </div>
+
+    <!-- Mobile Sidebar (Offcanvas) -->
+    <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel" style="background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);">
+        <div class="offcanvas-header">
+            <div class="text-center w-100">
+                <div class="bg-white text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 50px; height: 50px;">
+                    <i class="fa-solid fa-user-tie fa-lg"></i>
+                </div>
+                <h6 class="text-white mb-0">TPO Panel</h6>
+                <small class="text-white-50">Training & Placement</small>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a href="tpo_dashboard.php" class="nav-link text-white">
+                        <i class="fa-solid fa-tachometer-alt me-3"></i>Dashboard
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="departments.php" class="nav-link text-white active fw-bold">
+                        <i class="fa-solid fa-building me-3"></i>Departments
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="students.php" class="nav-link text-white">
+                        <i class="fa-solid fa-graduation-cap me-3"></i>Students
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="jobs.php" class="nav-link text-white">
+                        <i class="fa-solid fa-briefcase me-3"></i>Job Posts
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="applications.php" class="nav-link text-white">
+                        <i class="fa-solid fa-file-text me-3"></i>Applications
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <!-- Page Content -->
